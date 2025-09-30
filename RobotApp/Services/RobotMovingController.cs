@@ -11,19 +11,16 @@ interface IRobotMovingController
 
 public class RobotMovingController : IRobotMovingController
 {
-    private readonly IRobot _robot;
-
     //Keeps a mapping between commands and teh directions that user entered. TODO:Maybe move this :)
     private readonly Dictionary<char, Func<ICommand>> _directionToCommandMap;
 
     public RobotMovingController(IRobot robot)
     {
-        _robot = robot;
         _directionToCommandMap = new Dictionary<char, Func<ICommand>>
         {
-            { (char)Direction.Left, () => new TurnLeftCommand(_robot) },
-            { (char)Direction.Right, () => new TurnRightCommand(_robot) },
-            { (char)Direction.Forward, () => new MoveForwardCommand(_robot) }
+            { (char)Direction.Left, () => new TurnLeftCommand(robot) },
+            { (char)Direction.Right, () => new TurnRightCommand(robot) },
+            { (char)Direction.Forward, () => new MoveForwardCommand(robot) }
         };
     }
 
