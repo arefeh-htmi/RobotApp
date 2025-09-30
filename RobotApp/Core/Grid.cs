@@ -8,7 +8,10 @@ public class Grid
 
     public Grid(int width, int height)
     {
-        //TODO: MINI Validate??
+        if (width < 0 || height < 0)
+        {
+            throw new ArgumentOutOfRangeException("Grid dimensions can't be negative.");
+        }
         Width = width;
         Height = height;
     }
