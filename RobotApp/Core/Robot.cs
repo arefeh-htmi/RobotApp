@@ -3,12 +3,17 @@ using RobotApp.Models;
 namespace RobotApp.Core;
 public class Robot : IRobot
 {
+    private readonly Grid _grid;
     private Position _currentPosition;
     private Orientation _currentOrientation;
 
     public Robot(Grid grid, Position initialPosition, Orientation initialOrientation)
     {
-        //TODO:MINI Validate
+        if (!grid.IsPointWithinGridBounds(initialPosition))
+        {
+            throw new ArgumentException("Initial position is outside the grid bounds.");
+        }
+        _grid = grid;
         _currentPosition = initialPosition;
         _currentOrientation = initialOrientation;
     }
@@ -42,7 +47,7 @@ public class Robot : IRobot
 
     public void MoveForward()
     {
-        _currentPosition = _currentOrientation switch
+        var newPosition = _currentOrientation switch
         {
             Orientation.North => _currentPosition with { Y = _currentPosition.Y + 1 },
             Orientation.South => _currentPosition with { Y = _currentPosition.Y - 1 },
@@ -50,6 +55,12 @@ public class Robot : IRobot
             Orientation.West => _currentPosition with { X = _currentPosition.X - 1 },
             _ => _currentPosition
         };
-        //TODO: ADD Exception 
+
+        if (!_grid.IsPointWithinGridBounds(newPosition))
+        {
+            throw new InvalidOperationException($"Attempted to move outside grid bounds at {newPosition}.");
+        }
+
+        _currentPosition = newPosition;
     }
 }
