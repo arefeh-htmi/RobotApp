@@ -21,6 +21,11 @@ public class RobotMovingControllerTests
         
         controller.MoveRobot(commands.ToCharArray());
         
+        //This is the point that I get when I try the path on a grid 
+        Assert.Equal(1, robot.CurrentPosition.X);
+        Assert.Equal(1, robot.CurrentPosition.Y);
+        Assert.Equal(Orientation.North, robot.CurrentOrientation);
+        
         //Assert.Equal(1, robot.CurrentPosition.X);
         //Assert.Equal(3, robot.CurrentPosition.Y);
         //Assert.Equal(Orientation.North, robot.CurrentOrientation);
@@ -36,7 +41,8 @@ public class RobotMovingControllerTests
         var robot = new Robot(grid, initialPosition, initialOrientation);
         var controller = new RobotMovingController(robot);
 
-        controller.MoveRobot(commands.ToCharArray());
+        //Same as case above
+        Assert.Throws<InvalidOperationException>(() => controller.MoveRobot(commands.ToCharArray()));
 
         //Assert.Equal(3, robot.CurrentPosition.X);
         //Assert.Equal(1, robot.CurrentPosition.Y);
