@@ -16,23 +16,18 @@ public class RobotMovingControllerTests
         var initialOrientation = Orientation.North;
         var commands = "RFRFFRFRF";
         var robot = new Robot(grid, initialPosition, initialOrientation);
-        
+
         var controller = new RobotMovingController(robot);
-        
+
         controller.MoveRobot(commands.ToCharArray());
-        
-        //This is the point that I get when I try the path on a grid 
+
         Assert.Equal(1, robot.CurrentPosition.X);
-        Assert.Equal(1, robot.CurrentPosition.Y);
+        Assert.Equal(3, robot.CurrentPosition.Y);
         Assert.Equal(Orientation.North, robot.CurrentOrientation);
-        
-        //Assert.Equal(1, robot.CurrentPosition.X);
-        //Assert.Equal(3, robot.CurrentPosition.Y);
-        //Assert.Equal(Orientation.North, robot.CurrentOrientation);
     }
 
     [Fact]
-    public void Robot_Throws_When_Exiting_Grid()
+    public void Robot_Moves_To_CorrectFinalPositionAndOrientation_StartingAtStartOfGrid()
     {
         var grid = new Grid(5, 5);
         var initialPosition = new Position(0, 0);
@@ -41,11 +36,40 @@ public class RobotMovingControllerTests
         var robot = new Robot(grid, initialPosition, initialOrientation);
         var controller = new RobotMovingController(robot);
 
-        //Same as case above
-        Assert.Throws<InvalidOperationException>(() => controller.MoveRobot(commands.ToCharArray()));
+        controller.MoveRobot(commands.ToCharArray());
 
-        //Assert.Equal(3, robot.CurrentPosition.X);
-        //Assert.Equal(1, robot.CurrentPosition.Y);
-        //Assert.Equal(Orientation.East, robot.CurrentOrientation);
+        Assert.Equal(3, robot.CurrentPosition.X);
+        Assert.Equal(1, robot.CurrentPosition.Y);
+        Assert.Equal(Orientation.East, robot.CurrentOrientation);
+    }
+
+    [Fact]
+    public void Robot_Throws_When_Exiting_Grid_After_Moving()
+    {
+        var grid = new Grid(5, 5);
+        var initialPosition = new Position(0, 0);
+        var initialOrientation = Orientation.North;
+        var commands = "FLFFLRF";
+        var robot = new Robot(grid, initialPosition, initialOrientation);
+        var controller = new RobotMovingController(robot);
+        
+        Assert.Throws<InvalidOperationException>(() => controller.MoveRobot(commands.ToCharArray()));
+    }
+    
+    [Fact]
+    public void Robot_Throws_When_Starting_Off_Grid()
+    {
+        var grid = new Grid(5, 5);
+        var initialPosition = new Position(5, 0);
+        var initialOrientation = Orientation.North;
+        
+        Assert.Throws<ArgumentException>(() => InitializeRobot(grid, initialPosition, initialOrientation));
+    }
+
+    private (IRobot robot, RobotMovingController controller) InitializeRobot(Grid grid, Position initialPosition, Orientation initialOrientation)
+    {
+        var robot = new Robot(grid, initialPosition, initialOrientation);
+        var controller = new RobotMovingController(robot);
+        return (robot, controller);
     }
 }

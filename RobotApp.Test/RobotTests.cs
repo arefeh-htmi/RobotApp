@@ -56,7 +56,7 @@ public class RobotTests
     {
         var grid = new Grid(3, 3);
         var initialPos = new Position(0, 0);
-        var robot = new Robot(grid, initialPos, Orientation.South);
+        var robot = new Robot(grid, initialPos, Orientation.North);
         Assert.Throws<InvalidOperationException>(() => robot.MoveForward());
     }
 }

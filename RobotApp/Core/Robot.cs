@@ -49,8 +49,8 @@ public class Robot : IRobot
     {
         var newPosition = _currentOrientation switch
         {
-            Orientation.North => _currentPosition with { Y = _currentPosition.Y + 1 },
-            Orientation.South => _currentPosition with { Y = _currentPosition.Y - 1 },
+            Orientation.North => _currentPosition with { Y = _currentPosition.Y - 1 },
+            Orientation.South => _currentPosition with { Y = _currentPosition.Y + 1 },
             Orientation.East => _currentPosition with { X = _currentPosition.X + 1 },
             Orientation.West => _currentPosition with { X = _currentPosition.X - 1 },
             _ => _currentPosition
@@ -60,7 +60,6 @@ public class Robot : IRobot
         {
             throw new InvalidOperationException($"Attempted to move outside grid bounds at {newPosition}.");
         }
-
         _currentPosition = newPosition;
     }
 }
