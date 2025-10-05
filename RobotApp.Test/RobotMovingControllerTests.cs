@@ -15,9 +15,7 @@ public class RobotMovingControllerTests
         var initialPosition = new Position(1, 2);
         var initialOrientation = Orientation.North;
         var commands = "RFRFFRFRF";
-        var robot = new Robot(grid, initialPosition, initialOrientation);
-
-        var controller = new RobotMovingController(robot);
+        var (robot, controller) = InitializeRobot(grid, initialPosition, initialOrientation);
 
         controller.MoveRobot(commands.ToCharArray());
 
@@ -33,8 +31,7 @@ public class RobotMovingControllerTests
         var initialPosition = new Position(0, 0);
         var initialOrientation = Orientation.East;
         var commands = "RFLFFLRF";
-        var robot = new Robot(grid, initialPosition, initialOrientation);
-        var controller = new RobotMovingController(robot);
+        var (robot, controller) = InitializeRobot(grid, initialPosition, initialOrientation);
 
         controller.MoveRobot(commands.ToCharArray());
 
@@ -50,8 +47,7 @@ public class RobotMovingControllerTests
         var initialPosition = new Position(0, 0);
         var initialOrientation = Orientation.North;
         var commands = "FLFFLRF";
-        var robot = new Robot(grid, initialPosition, initialOrientation);
-        var controller = new RobotMovingController(robot);
+        var (_, controller) = InitializeRobot(grid, initialPosition, initialOrientation);
         
         Assert.Throws<InvalidOperationException>(() => controller.MoveRobot(commands.ToCharArray()));
     }
@@ -64,6 +60,18 @@ public class RobotMovingControllerTests
         var initialOrientation = Orientation.North;
         
         Assert.Throws<ArgumentException>(() => InitializeRobot(grid, initialPosition, initialOrientation));
+    }
+    
+    [Fact]
+    public void Robot_Throws_When_Invalid_Command()
+    {
+        var grid = new Grid(5, 5);
+        var initialPosition = new Position(1, 2);
+        var initialOrientation = Orientation.North;
+        var commands = "TRFRFFRFRF";
+        var (robot, controller) = InitializeRobot(grid, initialPosition, initialOrientation);
+        
+        Assert.Throws<ArgumentException>(() => controller.MoveRobot(commands.ToCharArray()));
     }
 
     private (IRobot robot, RobotMovingController controller) InitializeRobot(Grid grid, Position initialPosition, Orientation initialOrientation)

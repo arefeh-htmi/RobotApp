@@ -36,7 +36,7 @@ public class RobotMovingController : IRobotMovingController
             }
             else
             {
-                Console.WriteLine($"Unknown command was entered: '{commandChar}'.");
+                throw new ArgumentException($"Unknown command was entered: '{commandChar}'.");
             }
         }
     }
