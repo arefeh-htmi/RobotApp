@@ -31,15 +31,12 @@ class Program
                 Console.WriteLine("Invalid robot initial state. Exiting.");
                 return;
             }
-            var orientation = orientationChar switch
+
+            var isValidOrientation = Enum.TryParse(orientationChar.ToString(), out Orientation orientation);
+            if (!isValidOrientation)
             {
-                (char)Orientation.North => Orientation.North,
-                (char)Orientation.South => Orientation.South,
-                (char)Orientation.East => Orientation.East,
-                (char)Orientation.West => Orientation.West,
-                _ => throw new ArgumentException("Invalid orientation"),
-            };
-            
+                throw new ArgumentException("Invalid orientation");
+            }
             var grid = new Grid(gridWidth, gridHeight);
             var initialPosition = new Position(robotStartingX, robotStartingY);
 
