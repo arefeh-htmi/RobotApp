@@ -32,11 +32,13 @@ class Program
                 return;
             }
 
-            var isValidOrientation = Enum.TryParse(orientationChar.ToString(), out Orientation orientation);
+            var orientationName = Enum.GetName(typeof(Orientation), orientationChar);
+            var isValidOrientation = Enum.TryParse(orientationName, out Orientation orientation);
             if (!isValidOrientation)
             {
                 throw new ArgumentException("Invalid orientation");
             }
+
             var grid = new Grid(gridWidth, gridHeight);
             var initialPosition = new Position(robotStartingX, robotStartingY);
 
@@ -50,13 +52,12 @@ class Program
                 Console.WriteLine("No commands provided. Exiting.");
                 return;
             }
-            
+
             var robotMovingController = new RobotMovingController(robot);
             robotMovingController.MoveRobot(commandString.ToCharArray());
-            
+
             Console.WriteLine(
                 $"Final Position: {robot.CurrentPosition}, Final Direction: {robot.CurrentOrientation}");
-            
         }
         catch (ArgumentException ex)
         {
